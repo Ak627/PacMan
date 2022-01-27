@@ -6,7 +6,7 @@ enum DIRECTIONS { LEFT, RIGHT, UP, DOWN }; //left is 0, right is 1, up is 2, dow
 
 int main() {
     //game set up (you'll need these lines in every game)
-    sf::RenderWindow screen(sf::VideoMode(1920, 1080), "Pacman"); //set up screen
+    sf::RenderWindow screen(sf::VideoMode(1920, 1080), "PacMan"); //set up screen
     sf::Event event; //set up event queue
     sf::Clock clock; //set up the clock (needed for game timing)
     const float FPS = 60.0f; //FPS
@@ -38,7 +38,7 @@ int main() {
     int ypos = 85;
     int vx = 0;
     int vy = 0;
-    int radius = 50;
+    int radius = 35;
     sf::CircleShape player(35);
     player.setFillColor(sf::Color(250, 250, 0)); //using RGB value for color here (hex also works)
     player.setPosition(xpos, ypos); //top left "corner" of circle (not center!)
@@ -52,7 +52,7 @@ int main() {
             //this checks if the user has clicked the little "x" button in the top right corner
             if (event.type == sf::Event::EventType::Closed)
                 screen.close();
-            //KEYBOARD INPUT 
+            //KEYBOARD INPUT
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
                 keys[LEFT] = true;
             }
@@ -87,14 +87,45 @@ int main() {
             vy = -5;
         else
             vy = 0;
-        
+
+        //right collision!
+        if (vx > 0 &&
+            ((map[(ypos + 5) / 80]
+                [(xpos + (radius * 2) + 5) / 80] == 1) ||
+            (map[(ypos + (radius * 2) - 5) / 80]
+                [(xpos + (radius * 2) + 5) / 80] == 1)))
+        {
+                vx = 0;
+                cout << "Colliding RIGHT ";
+        }
+        //left collision
+        else if (vx < 0 &&
+            ((map[(ypos + 5) / 80]
+                [(xpos - 5) / 80] == 1) ||
+                (map[(ypos + (radius * 2) - 5) / 80]
+                    [(xpos + (radius * 2) + 5) / 80] == 1))) 
+        {
+            vx = 0;
+            cout << "Colliding LEFT ";
+        }
+        //down collision
+        if (vy > 0 && map[(ypos + radius * 2 + 3) / 80][(xpos) / 80] == 1) {
+            vy = 0;
+            cout << "Colliding DOWN ";
+        }
+        //up collision
+        else if (vy < 0 && map[(ypos - 3) / 80][(xpos) / 80] == 1) {
+            vy = 0;
+            cout << "Colliding UP ";
+        }
+        //update player position
         xpos += vx;
         ypos += vy;
         player.setPosition(xpos, ypos);
 
-        if (vx > 0 && map[(ypos) / 80][(xpos + radius * 2 + 3) / 80] == 1)
-            vx = 0;
-                //render section-----------------------------------------
+
+
+        //render section-----------------------------------------
         screen.clear(); //wipes screen, without this things smear
         for (int rows = 0; rows < 30; rows++)
             for (int cols = 0; cols < 24; cols++) {
