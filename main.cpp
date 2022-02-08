@@ -103,18 +103,27 @@ int main() {
             ((map[(ypos + 5) / 80]
                 [(xpos - 5) / 80] == 1) ||
                 (map[(ypos + (radius * 2) - 5) / 80]
-                    [(xpos + (radius * 2) + 5) / 80] == 1))) 
+                    [(xpos - 5) / 80] == 1)))
+
         {
             vx = 0;
             cout << "Colliding LEFT ";
         }
         //down collision
-        if (vy > 0 && map[(ypos + radius * 2 + 3) / 80][(xpos) / 80] == 1) {
+        if (vy > 0 &&
+            ((map[(ypos + (radius * 2) + 5) / 80]
+                [(xpos + 5) / 80] == 1) ||
+                (map[(ypos + (radius * 2) - 5) / 80]
+                    [(xpos + (radius * 2) + 5) / 80] == 1))) {
             vy = 0;
             cout << "Colliding DOWN ";
         }
         //up collision
-        else if (vy < 0 && map[(ypos - 3) / 80][(xpos) / 80] == 1) {
+        else if (vy < 0 &&
+            ((map[(ypos - 5) / 80]
+                [(xpos + 5) / 80] == 1) ||
+                (map[(ypos - 5) / 80]
+                    [(xpos + (radius * 2) - 5) / 80] == 1))) {
             vy = 0;
             cout << "Colliding UP ";
         }
