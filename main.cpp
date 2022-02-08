@@ -39,6 +39,7 @@ int main() {
     int vx = 0;
     int vy = 0;
     int radius = 35;
+    sf::CircleShape dot(5);
     sf::CircleShape player(35);
     player.setFillColor(sf::Color(250, 250, 0)); //using RGB value for color here (hex also works)
     player.setPosition(xpos, ypos); //top left "corner" of circle (not center!)
@@ -91,9 +92,9 @@ int main() {
         //right collision!
         if (vx > 0 &&
             ((map[(ypos + 5) / 80]
-                [(xpos + (radius * 2) + 5) / 80] == 1) ||
-            (map[(ypos + (radius * 2) - 5) / 80]
-                [(xpos + (radius * 2) + 5) / 80] == 1)))
+                 [(xpos + (radius * 2) + 5) / 80] == 1) ||
+             (map[(ypos + (radius * 2) - 5) / 80]
+                 [(xpos + (radius * 2) + 5) / 80] == 1)))
         {
                 vx = 0;
                 cout << "Colliding RIGHT ";
@@ -107,25 +108,25 @@ int main() {
 
         {
             vx = 0;
-            cout << "Colliding LEFT ";
+            //cout << "Colliding LEFT ";
         }
         //down collision
         if (vy > 0 &&
             ((map[(ypos + (radius * 2) + 5) / 80]
-                [(xpos + 5) / 80] == 1) ||
-                (map[(ypos + (radius * 2) - 5) / 80]
-                    [(xpos + (radius * 2) + 5) / 80] == 1))) {
+                 [(xpos) / 80] == 1) ||
+             (map[(ypos + (radius * 2) + 5) / 80]
+                 [(xpos + (radius * 2)) / 80] == 1))) {
             vy = 0;
             cout << "Colliding DOWN ";
         }
         //up collision
         else if (vy < 0 &&
             ((map[(ypos - 5) / 80]
-                [(xpos + 5) / 80] == 1) ||
-                (map[(ypos - 5) / 80]
-                    [(xpos + (radius * 2) - 5) / 80] == 1))) {
+                 [(xpos + 5) / 80] == 1) ||
+             (map[(ypos - 5) / 80]
+                 [(xpos + (radius * 2) - 4) / 80] == 1))) {
             vy = 0;
-            cout << "Colliding UP ";
+            //cout << "Colliding UP ";
         }
         //update player position
         xpos += vx;
