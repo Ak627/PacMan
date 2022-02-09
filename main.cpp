@@ -97,7 +97,6 @@ int main() {
                  [(xpos + (radius * 2) + 5) / 80] == 1)))
         {
                 vx = 0;
-                cout << "Colliding RIGHT ";
         }
         //left collision
         else if (vx < 0 &&
@@ -108,7 +107,6 @@ int main() {
 
         {
             vx = 0;
-            //cout << "Colliding LEFT ";
         }
         //down collision
         if (vy > 0 &&
@@ -117,7 +115,6 @@ int main() {
              (map[(ypos + (radius * 2) + 5) / 80]
                  [(xpos + (radius * 2)) / 80] == 1))) {
             vy = 0;
-            cout << "Colliding DOWN ";
         }
         //up collision
         else if (vy < 0 &&
@@ -126,7 +123,6 @@ int main() {
              (map[(ypos - 5) / 80]
                  [(xpos + (radius * 2) - 4) / 80] == 1))) {
             vy = 0;
-            //cout << "Colliding UP ";
         }
         //update player position
         xpos += vx;
@@ -145,6 +141,7 @@ int main() {
                 }
             }
         screen.draw(player);
+        screen.draw(dot);
         screen.display(); //flips memory drawings onto screen
 
     }//######################## end game loop ###################################################################################
