@@ -36,13 +36,17 @@ int main() {
     //player set up
     int xpos = 85;
     int ypos = 85;
+    int dotx = 35;
+    int doty = 35;
     int vx = 0;
     int vy = 0;
     int radius = 35;
-    sf::CircleShape dot(5);
+    sf::CircleShape dot(7);
     sf::CircleShape player(35);
     player.setFillColor(sf::Color(250, 250, 0)); //using RGB value for color here (hex also works)
     player.setPosition(xpos, ypos); //top left "corner" of circle (not center!)
+    dot.setFillColor(sf::Color(0, 250, 100));
+    dot.setPosition(dotx, doty);
     bool keys[] = { false, false, false, false };
 
     //################### HOLD ONTO YOUR BUTTS, ITS THE GAME LOOP###############################################################
