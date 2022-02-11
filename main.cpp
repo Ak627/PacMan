@@ -18,6 +18,11 @@ int main() {
     sf::Sprite wall;
     wall.setTexture(brick);
 
+    //sf::Texture pacman;
+    //pacman.loadFromFile("pacman.png");
+    //sf::IntRect pac(0, 0, 70, 70);
+    //sf::Sprite playerImg(pacman, pac);
+
     int map[30][24] = {
         1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
         1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,1,1,1,
@@ -36,8 +41,8 @@ int main() {
     //player set up
     int xpos = 85;
     int ypos = 85;
-    int dotx = 35;
-    int doty = 35;
+    //int dotx = 115;
+    //int doty = 115;
     int vx = 0;
     int vy = 0;
     int radius = 35;
@@ -46,7 +51,7 @@ int main() {
     player.setFillColor(sf::Color(250, 250, 0)); //using RGB value for color here (hex also works)
     player.setPosition(xpos, ypos); //top left "corner" of circle (not center!)
     dot.setFillColor(sf::Color(0, 250, 100));
-    dot.setPosition(dotx, doty);
+    //dot.setPosition(dotx, doty);
     bool keys[] = { false, false, false, false };
 
     //################### HOLD ONTO YOUR BUTTS, ITS THE GAME LOOP###############################################################
@@ -133,8 +138,21 @@ int main() {
         ypos += vy;
         player.setPosition(xpos, ypos);
 
+        //eating dot
+        if (map[ypos / 80][xpos / 80] == 0)
+            map[ypos / 80][xpos / 80] = -1;
+        cout << xpos << " , " << ypos << endl;
 
-
+        //warp zone
+        if (xpos < -50 && ypos >= 240 && ypos < 300)
+            xpos = 1840;
+        else if (xpos < -50 && ypos >= 480 && ypos < 500)
+            xpos = 1840;
+        if (xpos > 1840 && ypos >= 240 && ypos < 300)
+            xpos = 0;
+        else if (xpos > 1840 && ypos >= 480 && ypos < 500)
+            xpos = 0;
+        
         //render section-----------------------------------------
         screen.clear(); //wipes screen, without this things smear
         for (int rows = 0; rows < 30; rows++)
@@ -142,6 +160,10 @@ int main() {
                 if (map[rows][cols] == 1) {
                     wall.setPosition(cols * 80, rows * 80);
                     screen.draw(wall);
+                }
+                if (map[rows][cols] == 0) {
+                    dot.setPosition(cols * 80+40, rows * 80+40);
+                    screen.draw(dot);
                 }
             }
         screen.draw(player);
