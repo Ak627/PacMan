@@ -18,6 +18,16 @@ int main() {
     sf::Sprite wall;
     wall.setTexture(brick);
 
+    sf::Texture pr;
+    pr.loadFromFile("Portal R.png");
+    sf::Sprite warpr;
+    warpr.setTexture(pr);
+
+    sf::Texture pl;
+    pl.loadFromFile("Portal l.png");
+    sf::Sprite warpl;
+    warpl.setTexture(pl);
+
     //sf::Texture pacman;
     //pacman.loadFromFile("pacman.png");
     //sf::IntRect pac(0, 0, 70, 70);
@@ -27,10 +37,10 @@ int main() {
         1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
         1,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,1,1,1,
         1,0,1,1,1,0,1,1,0,1,0,0,0,0,1,1,1,0,1,1,0,1,0,1,
-        0,0,1,0,0,0,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,1,0,0,
+        3,0,1,0,0,0,1,0,0,0,0,1,1,0,1,0,0,0,0,1,0,1,0,2,
         1,0,1,0,1,1,0,0,1,0,1,1,0,0,0,0,1,1,0,1,0,0,0,1,
         1,1,0,0,0,1,1,0,1,1,1,1,0,1,0,1,1,1,0,0,0,1,0,1,
-        0,0,0,1,0,0,0,0,0,1,0,0,0,1,1,1,0,0,0,1,0,0,0,0,
+        3,0,0,1,0,0,0,0,0,1,0,0,0,1,1,1,0,0,0,1,0,0,0,2,
         1,0,1,1,1,0,1,1,0,0,0,1,0,0,0,0,0,1,1,1,0,1,1,1,
         1,0,0,0,0,0,0,0,0,1,0,0,0,1,1,1,0,1,1,0,0,1,0,1,
         1,0,1,1,0,1,1,0,1,1,0,1,1,0,0,0,1,1,1,1,0,0,0,1,
@@ -157,6 +167,7 @@ int main() {
         screen.clear(); //wipes screen, without this things smear
         for (int rows = 0; rows < 30; rows++)
             for (int cols = 0; cols < 24; cols++) {
+                
                 if (map[rows][cols] == 1) {
                     wall.setPosition(cols * 80, rows * 80);
                     screen.draw(wall);
@@ -165,6 +176,15 @@ int main() {
                     dot.setPosition(cols * 80+40, rows * 80+40);
                     screen.draw(dot);
                 }
+                if (map[rows][cols] == 2) {
+                    warpr.setPosition(cols * 80, rows * 80);
+                    screen.draw(warpr);
+                }
+                if (map[rows][cols] == 3) {
+                    warpl.setPosition(cols * 80, rows * 80);
+                    screen.draw(warpl);
+                }
+                
             }
         screen.draw(player);
         screen.draw(dot);
