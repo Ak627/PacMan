@@ -1,8 +1,9 @@
 #include<iostream>
 #include "SFML/Graphics.hpp"
+#include"globals.h"
+#include"ghost.h"
 using namespace std;
 
-enum DIRECTIONS { LEFT, RIGHT, UP, DOWN }; //left is 0, right is 1, up is 2, down is 3
 
 int main() {
     //game set up (you'll need these lines in every game)
@@ -51,8 +52,6 @@ int main() {
     //player set up
     int xpos = 85;
     int ypos = 85;
-    //int dotx = 115;
-    //int doty = 115;
     int vx = 0;
     int vy = 0;
     int radius = 35;
@@ -61,7 +60,12 @@ int main() {
     player.setFillColor(sf::Color(250, 250, 0)); //using RGB value for color here (hex also works)
     player.setPosition(xpos, ypos); //top left "corner" of circle (not center!)
     dot.setFillColor(sf::Color(0, 250, 100));
-    //dot.setPosition(dotx, doty);
+    ghost Blinky;
+    Blinky.initGhost(400, 654, 1, 0, 1, 0);
+    ghost Dami;
+    Dami.initGhost(1205, 805, 1, 0, 1, 0);
+
+
     bool keys[] = { false, false, false, false };
 
     //################### HOLD ONTO YOUR BUTTS, ITS THE GAME LOOP###############################################################
@@ -163,6 +167,8 @@ int main() {
         else if (xpos > 1840 && ypos >= 480 && ypos < 500)
             xpos = 0;
         
+        Blinky.chase1(xpos, ypos, map);
+        Dami.chase2(xpos, ypos, map);
         //render section-----------------------------------------
         screen.clear(); //wipes screen, without this things smear
         for (int rows = 0; rows < 30; rows++)
@@ -188,6 +194,8 @@ int main() {
             }
         screen.draw(player);
         screen.draw(dot);
+        Blinky.drawGhost(screen);
+        Dami.drawGhost(screen);
         screen.display(); //flips memory drawings onto screen
 
     }//######################## end game loop ###################################################################################
