@@ -111,16 +111,16 @@ int ghost::getYpos() {
 	return ypos;
 }
 
-void ghost::initGhost(int x, int y, int dir, bool dead, int Gspeed, int Gcolor) {
+void ghost::initGhost(int x, int y, int dir, bool dead, int Gspeed, sf::Color color) {
 	xpos = x;
 	ypos = y;
-	color = Gcolor;
+	color = color;
 	direction = dir;
 	dead = dead;
 	speed = Gspeed;
 	offset = 1;
 	shape.setRadius(PACSIZE);
-	shape.setFillColor(sf::Color(200, 0, 0));
+	shape.setFillColor(color);
 }
 
 bool ghost::isdead() {
@@ -228,10 +228,25 @@ void ghost::chase2(int x, int y, int level[30][24]) {
 		cout << "no wall to the right." << endl;
 	if (wallCollide(xpos, ypos, DOWN, level))
 		cout << "there's a wall below me" << endl;
-
-
+	
+	// Moving UP or DOWN, we check for possibility of turning UP or DOWN
+	if ((direction == UP) || (direction == DOWN)) {
+		// Can we turn LEFT?
+		if (!wallCollide(xpos, ypos, LEFT, level)) {
+			// Is the player LEFT?
+			if ((x < xpos)) {
+				direction = LEFT;
+			}
+		}
+		if (!wallCollide(xpos, ypos, RIGHT, level)) {
+			// Is the player RIGHT?
+			if ((x > xpos)) {
+				direction = RIGHT;
+			}
+		}
+	}
 	// Moving LEFT or RIGHT, we check for possibility of turning UP or DOWN
-	if ((direction == LEFT) || (direction == RIGHT)) {
+	else if ((direction == LEFT) || (direction == RIGHT)) {
 		// Can we turn UP?
 		if (!wallCollide(xpos, ypos, UP, level)) {
 			// Is the player UP?
@@ -246,19 +261,135 @@ void ghost::chase2(int x, int y, int level[30][24]) {
 			}
 		}
 	}
+	// Final case, if we bump into a wall.
+	if (direction == UP && wallCollide(xpos, ypos, UP, level)) { direction = DOWN; }
+	else if (direction == DOWN && wallCollide(xpos, ypos, DOWN, level)) { direction = UP; }
+	else if (direction == LEFT && wallCollide(xpos, ypos, LEFT, level)) { direction = RIGHT; }
+	else if (direction == RIGHT && wallCollide(xpos, ypos, RIGHT, level)) { direction = LEFT; }
+
+	// Once we've decided where to move, do so.
+	if (direction == UP) ypos -= 4;
+	else if (direction == DOWN) ypos += 4;
+	else if (direction == LEFT) xpos -= 4;
+	else if (direction == RIGHT) xpos += 4;
+
+
+}
+
+void ghost::chase3(int x, int y, int level[30][24]) {
+	//this is just for testing, used this to get it to work :)
+	cout << "state is " << direction << endl;
+	if (wallCollide(xpos, ypos, LEFT, level))
+		cout << "there's a wall to the left of me" << endl;
+	else
+		cout << "no wall to the left." << endl;
+	if (wallCollide(xpos, ypos, UP, level))
+		cout << "there's a wall above me" << endl;
+	if (wallCollide(xpos, ypos, RIGHT, level))
+		cout << "there's a wall to the right of me" << endl;
+	else
+		cout << "no wall to the right." << endl;
+	if (wallCollide(xpos, ypos, DOWN, level))
+		cout << "there's a wall below me" << endl;
+
 	// Moving UP or DOWN, we check for possibility of turning UP or DOWN
-	else if ((direction == UP) || (direction == DOWN)) {
+	if ((direction == DOWN) || (direction == UP)) {
 		// Can we turn LEFT?
-		if (!wallCollide(xpos, ypos, LEFT, level)) {
+		if (!wallCollide(xpos, ypos, RIGHT, level)) {
 			// Is the player LEFT?
+			if ((x > xpos)) {
+				direction = RIGHT;
+			}
+		}
+		if (!wallCollide(xpos, ypos, LEFT, level)) {
+			// Is the player RIGHT?
 			if ((x < xpos)) {
 				direction = LEFT;
 			}
 		}
+	}
+	// Moving LEFT or RIGHT, we check for possibility of turning UP or DOWN
+	else if ((direction == RIGHT) || (direction == LEFT)) {
+		// Can we turn UP?
+		if (!wallCollide(xpos, ypos, UP, level)) {
+			// Is the player UP?
+			if ((y < ypos)) {
+				direction = UP;
+			}
+		}
+		if (!wallCollide(xpos, ypos, DOWN, level)) {
+			// Is the player DOWN?
+			if ((y > ypos)) {
+				direction = DOWN;
+			}
+		}
+	}
+	// Final case, if we bump into a wall.
+	if (direction == UP && wallCollide(xpos, ypos, UP, level)) { direction = DOWN; }
+	else if (direction == DOWN && wallCollide(xpos, ypos, DOWN, level)) { direction = UP; }
+	else if (direction == LEFT && wallCollide(xpos, ypos, LEFT, level)) { direction = RIGHT; }
+	else if (direction == RIGHT && wallCollide(xpos, ypos, RIGHT, level)) { direction = LEFT; }
+
+	// Once we've decided where to move, do so.
+	if (direction == UP) ypos -= 4;
+	else if (direction == DOWN) ypos += 4;
+	else if (direction == LEFT) xpos -= 4;
+	else if (direction == RIGHT) xpos += 4;
+
+
+}
+
+void ghost::chase4(int x, int y, int level[30][24]) {
+	//this is just for testing, used this to get it to work :)
+	cout << "state is " << direction << endl;
+	if (wallCollide(xpos, ypos, LEFT, level))
+		cout << "there's a wall to the left of me" << endl;
+	else
+		cout << "no wall to the left." << endl;
+	if (wallCollide(xpos, ypos, UP, level))
+		cout << "there's a wall above me" << endl;
+	if (wallCollide(xpos, ypos, RIGHT, level))
+		cout << "there's a wall to the right of me" << endl;
+	else
+		cout << "no wall to the right." << endl;
+	if (wallCollide(xpos, ypos, DOWN, level))
+		cout << "there's a wall below me" << endl;
+
+	// Moving UP or DOWN, we check for possibility of turning UP or DOWN
+	if ((direction == DOWN)) {
+		// Can we turn LEFT?
 		if (!wallCollide(xpos, ypos, RIGHT, level)) {
-			// Is the player RIGHT?
-			if ((x > xpos)) {
+			// Is the player LEFT?
+			if ((x < xpos)) {
 				direction = RIGHT;
+			}
+		}
+	}
+	else if ((direction == UP)) {
+		// Can we turn UP?
+		if (!wallCollide(xpos, ypos, LEFT, level)) {
+			// Is the player DOWN?
+			if ((y < ypos)) {
+				direction = LEFT;
+			}
+		}
+	}
+	// Moving LEFT or RIGHT, we check for possibility of turning UP or DOWN
+	else if ((direction == LEFT)){
+		// Can we turn UP?
+		if (!wallCollide(xpos, ypos, DOWN, level)) {
+			// Is the player DOWN?
+			if ((y > ypos)) {
+				direction = DOWN;
+			}
+		}
+	}
+	else if ((direction == RIGHT)) {
+		// Can we turn UP?
+		if (!wallCollide(xpos, ypos, UP, level)) {
+			// Is the player DOWN?
+			if ((y < ypos)) {
+				direction = UP;
 			}
 		}
 	}
